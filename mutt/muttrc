@@ -1,0 +1,116 @@
+set mbox_type=Maildir
+set folder="~/MAIL/DIRECTORY"
+set mask="!^\\.[^.]"
+set mbox="~/MAIL/DIRECTORY"
+set spoolfile="~/MAIL/DIRECTORY"
+set record="+sent"
+set postponed="+draft"
+set header_cache=~/.hcache
+set edit_headers
+
+mailboxes `find ~/MAIL/DIRECTORY/ '(' -type d '(' -name 'cur' -o -name 'new' ')' -prune -printf '%h ' ')'`
+
+ignore *
+unignore date from to cc subject resent-from reply-to x-mailer
+
+# Reply behaviour
+set fast_reply="yes"
+set include="yes"
+
+# Views
+set pager_index_lines="10"
+set pager_stop="yes"
+set sort="threads"
+
+# Forwarding type
+set mime_forward=yes
+
+# Attachements
+set mailcap_path = $HOME/.mutt/mailcap
+auto_view text/html
+alternative_order text/plain text/enriched text/html application/pdf
+
+# Source solarized color theme
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc
+
+# Define some macros
+macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+
+set sleep_time = 0
+macro pager,index p "<change-folder>~/MAIL/DIRECTORY/personals<enter>" "Personal account"
+
+macro pager,index S "<clear-flag>N<save-message>~/MAIL/DIRECTORY/spam<enter>" "Move to spam"
+
+# Bindings for custom scripts 
+macro pager,index L "!collectmail" "Collect new mail"
+macro pager,index R "!reportspam" "Report spam to spamcap"
+
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
+
+# Define folder hooks for multiple profiles
+folder-hook ~/MAIL/DIRECTORY/personal source ~/.mutt/personal.muttrc
+
+# PGP 
+set pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch --output - %f"
+set pgp_verify_command="gpg --no-verbose --batch --output - --verify %s %f"
+set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch --output - %f"
+set pgp_sign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_clearsign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust --encrypt-to YOURKEY -- -r %r -- %f"
+set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust --encrypt-to YOURKEY -- -r %r -- %f"
+set pgp_import_command="gpg --no-verbose --import -v %f"
+set pgp_export_command="gpg --no-verbose --export --armor %r"
+set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs %r"
+set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r"
+set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret-keys %r"
+
+# specify the uid to use when encrypting/signing
+set pgp_sign_as=YOURKEY
+
+# this set the number of seconds to keep in memory the passpharse used to encrypt/sign
+# the more the less secure it will be
+set pgp_timeout=21600
+
+# it's a regexp used against the GPG output: if it matches some line of the output
+# then mutt considers the message a good signed one (ignoring the GPG exit code)
+set pgp_good_sign="^gpg: Good signature from"
+
+# mutt uses by default PGP/GPG to sign/encrypt messages
+# if you want to use S-mime instead set the smime_is_default variable to yes
+
+# automatically sign all outcoming messages
+# set crypt_autosign
+# sign only replies to signed messages
+set crypt_replysign
+
+# automatically encrypt outcoming messages
+set crypt_autoencrypt=no
+# encrypt only replies to signed messages
+set crypt_replyencrypt=yes
+# encrypt and sign replies to encrypted messages
+set crypt_replysignencrypted=yes
+
+# automatically verify the sign of a message when opened
+set crypt_verify_sig=yes
+
+# Use goobook addressbook 
+set query_command="goobook query '%s'"
+bind editor \t complete-query
+
+# Use aspell instead of ispell for spellcheck
+set ispell="aspell -e -l en -c"
+set editor="vim \"+set nonumber\" +/^$/ +8"
+
+# Use urlview for links
+macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+
+# Mutt sidebar
+set sidebar_width	= 35
+set sidebar_visible	= yes
+color sidebar_new yellow default
+bind index <left> sidebar-prev
+bind index <right> sidebar-next
+bind index <space> sidebar-open

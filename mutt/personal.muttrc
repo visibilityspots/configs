@@ -1,0 +1,23 @@
+set mbox_type=Maildir
+set folder="~/MAIL/DIRECTORY/personal/"
+set from="personal@email.address"
+set use_from=yes
+set realname="NAME"
+set sendmail="/usr/bin/msmtp -a personal"
+set signature="~/.mutt/signatures/personal.sig"
+
+set mask="!^\\.[^.]"
+set mbox="~/MAIL/DIRECTORY/personal"
+set spoolfile="~/MAIL/DIRECTORY/personal"
+set record="+sent"
+set postponed="+drafts"
+set header_cache=~/.hcache
+set edit_headers
+
+ignore *
+unignore date from to cc subject resent-from reply-to x-mailer
+ 
+set crypt_autosign
+
+# Use goobook addressbook 
+set query_command="goobook query '%s'"
