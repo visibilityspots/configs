@@ -1,4 +1,4 @@
-# Configurations files
+# Configuration files
 
 This is a repository containing configuration files I wrote during the usage of some tools. Most of the tools are already described in howto's a hundred times therefore I didn't tried to reproduce such an already existing howto but giving you a view of the features I combined.
 
