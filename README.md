@@ -1,14 +1,12 @@
-Configurations files
-====================
+# Configurations files
 
-This is a repository containing configuration files I wrote during the usage of some tools. Most of the tools are already described in howto's a hundred times therefore I didn't tried to reproduce such an already exising howto but giving you a view of the features I combined.
+This is a repository containing configuration files I wrote during the usage of some tools. Most of the tools are already described in howto's a hundred times therefore I didn't tried to reproduce such an already existing howto but giving you a view of the features I combined.
 
 Feel free to adopt, change and create issues or pull requests for them
 
-mutt
-----
+## mutt
 
-For my mail client I am using mutt a command line mail program. My mail folders are of the maildir format. Those folders are encrypted using encfs to a dropbox account. That way I always have a backup of my mails and I can access them from everywhere.
+For my mail client I am using mutt a command line mail program. My mail folders are of the mail dir format. Those folders are encrypted using encfs to a dropbox account. That way I always have a backup of my mails and I can access them from everywhere.
 
 I pull my mail using fetchmail and the pop3 adapter. I know IMAP exists but I'm getting used to pop for several years by now.
 
